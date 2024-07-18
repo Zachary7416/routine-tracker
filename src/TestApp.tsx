@@ -1,3 +1,5 @@
+// TestApp.tsx
+
 import React from 'react';
 import { useState } from 'react';
 import { Stage } from './types';
@@ -16,7 +18,7 @@ const TestApp: React.FC = () => {
       case Stage.HOME:
         return <Home setStage={setStage} />;
       case Stage.DESIGNATION:
-        return <Designation designation="Manager" />;
+        return <Designation setStage={setStage} />;
       case Stage.CHECKLIST:
         return <CheckList />;
       case Stage.REVIEW:

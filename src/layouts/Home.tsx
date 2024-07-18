@@ -1,4 +1,4 @@
-// src/layout/Home.tsx
+// layout/Home.tsx
 import React from 'react';
 import { Stage, STAGES } from '../types';
 import Navi from '../components/Navi';
