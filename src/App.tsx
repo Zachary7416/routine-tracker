@@ -1,43 +1,49 @@
-// src/App.tsx
-import React, { useState, useEffect } from 'react';
-import TodoForm from './components/TodoForm';
-import TodoList from './components/TodoList';
-import Summary from './components/Summary';
-import { Todo } from './types';
-import './index.css'; // Include Tailwind styles
+// TestApp.tsx
 
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { Stage } from './types';
+import Home from './layouts/Home';
+import Designation from './layouts/Designation';
+import CheckList from './layouts/CheckList';
+import Summary from './layouts/Summary';
+import './index.css';
+
+// Conditional rendering based on stage.
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
-    setTodos(savedTodos);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
-
-  const addTodo = (todo: Todo) => {
-    setTodos([...todos, todo]);
+  const getStage = () => {
+    // get stage from local storage or default to HOME
+    const storedStage = localStorage.getItem('stage');
+    if (storedStage) {
+      return storedStage as Stage;
+    }
+    return Stage.HOME;
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const [stage, setStage] = useState<Stage>(getStage());
+
+  useEffect(() => {
+    // save stage to local storage
+    localStorage.setItem('stage', stage);
+  }, [stage]);
+
+  const renderStage = () => {
+    switch (stage) {
+      case Stage.HOME:
+        return <Home setStage={setStage} />;
+      case Stage.DESIGNATION:
+        return <Designation setStage={setStage} />;
+      case Stage.CHECKLIST:
+        return <CheckList setStage={setStage} />;
+      case Stage.REVIEW:
+        return <Summary setStage={setStage} />;
+
+      default:
+        return <div>Invalid stage</div>;
+    }
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">RoutineTracker</h1>
-      <TodoForm addTodo={addTodo} />
-      <TodoList todos={todos} toggleTodo={toggleTodo} />
-      <Summary todos={todos} />
-    </div>
-  );
+  return <div>{renderStage()}</div>;
 };
 
 export default App;

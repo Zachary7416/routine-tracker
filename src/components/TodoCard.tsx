@@ -9,7 +9,7 @@ interface TodoCardProps {
   deleteTodo?: (id: number) => void;
   moveTodoUp?: (id: number) => void;
   moveTodoDown?: (id: number) => void;
-  showControls?: boolean;
+  designMode?: boolean;
   showMoveUp?: boolean;
   showMoveDown?: boolean;
 }
@@ -21,7 +21,7 @@ const TodoCard: React.FC<TodoCardProps> = ({
   deleteTodo,
   moveTodoUp,
   moveTodoDown,
-  showControls = false,
+  designMode = false,
   showMoveUp = true,
   showMoveDown = true,
 }) => {
@@ -37,10 +37,10 @@ const TodoCard: React.FC<TodoCardProps> = ({
         type="checkbox"
         checked={todo.completed}
         onChange={() => toggleTodo(todo.id)}
-        disabled={showControls}
+        disabled={designMode}
         className="form-checkbox h-5 w-5 text-green-600 rounded-md ml-3 focus:ring-2 focus:ring-green-400"
       />
-      {showControls && (
+      {designMode && (
         <div className="ml-4 flex space-x-2">
           {showMoveUp && (
             <button
